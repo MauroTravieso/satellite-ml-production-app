@@ -1,0 +1,939 @@
+/* ============================================================
+   SATELLITE TRAJECTORY CLASSIFICATION SYSTEM - STYLES
+   Author: Mauro Travieso
+   Version: 1.0
+   Description: Complete stylesheet for ML-powered satellite 
+                classification web application
+   ============================================================ */
+
+/* ============================================================
+   1. RESET & BASE STYLES
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 50%, #2a2d4a 100%);
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   2. STARFIELD BACKGROUND ANIMATION
+   ============================================================ */
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 0.3; 
+    }
+    50% { 
+        opacity: 1; 
+    }
+}
+
+/* ============================================================
+   3. LAYOUT & CONTAINER
+   ============================================================ */
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================================
+   4. HEADER SECTION
+   ============================================================ */
+
+header {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+    font-size: 3em;
+    background: linear-gradient(45deg, #00d4ff, #0099ff, #00d4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 10px;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+}
+
+h2 {
+    color: #00d4ff;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h3 {
+    color: #00d4ff;
+    margin-bottom: 15px;
+}
+
+.subtitle {
+    color: #88ccff;
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+/* ============================================================
+   5. MAIN CONTENT GRID
+   ============================================================ */
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+/* ============================================================
+   6. PANEL STYLES
+   ============================================================ */
+
+.panel {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.panel h2 {
+    color: #00d4ff;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ============================================================
+   7. FORM ELEMENTS
+   ============================================================ */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: #88ccff;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+input, 
+select {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+input:focus, 
+select:focus {
+    outline: none;
+    border-color: #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+input::placeholder {
+    color: rgba(136, 204, 255, 0.5);
+}
+
+/* Number input arrows styling */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+small {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.85em;
+    color: #88ccff;
+}
+
+/* ============================================================
+   8. BUTTON STYLES
+   ============================================================ */
+
+button {
+    background: linear-gradient(45deg, #00d4ff, #0099ff);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    width: 100%;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.history-button {
+    background: linear-gradient(45deg, #00ff88, #00cc66);
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 0.95em;
+}
+
+/* ============================================================
+   9. RESULT PANEL & ANIMATIONS
+   ============================================================ */
+
+.result-panel {
+    grid-column: 1 / -1;
+    display: none;
+}
+
+.result-panel.show {
+    display: block;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.prediction-result {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 255, 0.1));
+    border: 2px solid #00d4ff;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 20px;
+}
+
+.satellite-name {
+    font-size: 2.5em;
+    color: #00d4ff;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+    to {
+        text-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+    }
+}
+
+/* ============================================================
+   10. CONFIDENCE BAR
+   ============================================================ */
+
+.confidence-bar {
+    width: 100%;
+    height: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 15px 0;
+    position: relative;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff, #0099ff);
+    transition: width 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+/* ============================================================
+   11. FEATURE IMPORTANCE DISPLAY
+   ============================================================ */
+
+.feature-importance {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.feature-item {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 3px solid #00d4ff;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    background: rgba(0, 212, 255, 0.1);
+    transform: translateX(5px);
+}
+
+.feature-name {
+    color: #88ccff;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.feature-value {
+    color: #ffffff;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+/* ============================================================
+   12. MODEL INFORMATION
+   ============================================================ */
+
+.model-info {
+    background: rgba(0, 153, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid rgba(0, 153, 255, 0.3);
+}
+
+.metric {
+    display: inline-block;
+    margin: 10px 20px 10px 0;
+}
+
+.metric-label {
+    color: #88ccff;
+    font-size: 0.9em;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.metric-value {
+    color: #00d4ff;
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block;
+}
+
+/* ============================================================
+   13. LOADING SPINNER
+   ============================================================ */
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.loading.show {
+    display: block;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.spinner {
+    border: 4px solid rgba(0, 212, 255, 0.1);
+    border-top: 4px solid #00d4ff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { 
+        transform: rotate(0deg); 
+    }
+    100% { 
+        transform: rotate(360deg); 
+    }
+}
+
+/* ============================================================
+   14. BATCH UPLOAD AREA
+   ============================================================ */
+
+.batch-upload {
+    border: 2px dashed rgba(0, 212, 255, 0.5);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.batch-upload:hover {
+    border-color: #00d4ff;
+    background: rgba(0, 212, 255, 0.05);
+    transform: scale(1.02);
+}
+
+.batch-upload:active {
+    transform: scale(0.98);
+}
+
+/* ============================================================
+   15. ICONS
+   ============================================================ */
+
+.icon {
+    font-size: 1.5em;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+/* ============================================================
+   16. EXPLAINABILITY SECTION
+   ============================================================ */
+
+.explainability-section {
+    background: rgba(255, 165, 0, 0.1);
+    border: 1px solid rgba(255, 165, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.explainability-section h3 {
+    color: #ffa500;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contribution-bar {
+    background: rgba(0, 0, 0, 0.2);
+    height: 25px;
+    border-radius: 5px;
+    margin: 10px 0;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+.contribution-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffa500, #ff8c00);
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    color: white;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: width 0.8s ease;
+}
+
+.contribution-label {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-weight: bold;
+    z-index: 1;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-size: 0.85em;
+}
+
+/* ============================================================
+   17. PERFORMANCE STATISTICS
+   ============================================================ */
+
+.performance-stats {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.stat-box:hover {
+    background: rgba(0, 255, 0, 0.1);
+    transform: scale(1.05);
+}
+
+.stat-value {
+    font-size: 1.8em;
+    color: #00ff00;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #88ffaa;
+    font-size: 0.9em;
+    margin-top: 5px;
+    display: block;
+}
+
+/* ============================================================
+   18. TABLE STYLES
+   ============================================================ */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+thead {
+    background: rgba(0, 212, 255, 0.2);
+}
+
+th, 
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+th {
+    background: rgba(0, 212, 255, 0.1);
+    color: #00d4ff;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+tr {
+    transition: background 0.2s ease;
+}
+
+tr:hover {
+    background: rgba(0, 212, 255, 0.05);
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ============================================================
+   19. MODAL DIALOG
+   ============================================================ */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1d3a, #2a2d4a);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 90%;
+    max-height: 80%;
+    overflow-y: auto;
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.5);
+    position: relative;
+    animation: slideInModal 0.4s ease-out;
+}
+
+@keyframes slideInModal {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-close {
+    float: right;
+    font-size: 2em;
+    color: #00d4ff;
+    cursor: pointer;
+    line-height: 0.8;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+}
+
+.modal-close:hover {
+    color: #00ff88;
+    transform: rotate(90deg);
+}
+
+/* Custom scrollbar for modal */
+.modal-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: #00d4ff;
+    border-radius: 5px;
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+    background: #00ff88;
+}
+
+/* ============================================================
+   20. FOOTER
+   ============================================================ */
+
+.footer {
+    background: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+
+.footer p {
+    margin: 5px 0;
+    color: #88ccff;
+}
+
+/* ============================================================
+   21. UTILITY CLASSES
+   ============================================================ */
+
+.text-center {
+    text-align: center;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+/* ============================================================
+   22. RESPONSIVE DESIGN - TABLET
+   ============================================================ */
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 2.5em;
+    }
+    
+    .main-content {
+        gap: 20px;
+    }
+    
+    .panel {
+        padding: 20px;
+    }
+}
+
+/* ============================================================
+   23. RESPONSIVE DESIGN - MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .subtitle {
+        font-size: 1em;
+    }
+    
+    .panel h2 {
+        font-size: 1.5em;
+    }
+    
+    button {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+    
+    .satellite-name {
+        font-size: 2em;
+    }
+    
+    .feature-importance {
+        grid-template-columns: 1fr;
+    }
+    
+    .performance-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        max-width: 95%;
+        max-height: 90%;
+        padding: 20px;
+    }
+    
+    table {
+        font-size: 0.85em;
+    }
+    
+    th, td {
+        padding: 8px;
+    }
+    
+    .metric {
+        display: block;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 20px 10px;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .panel {
+        padding: 15px;
+    }
+    
+    input, select, button {
+        font-size: 0.9em;
+    }
+    
+    .stat-value {
+        font-size: 1.5em;
+    }
+    
+    table {
+        font-size: 0.75em;
+    }
+    
+    th, td {
+        padding: 6px;
+    }
+}
+
+/* ============================================================
+   24. PRINT STYLES
+   ============================================================ */
+
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .stars,
+    .modal,
+    button,
+    .batch-upload,
+    .history-button {
+        display: none !important;
+    }
+    
+    .panel {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+    
+    .result-panel {
+        display: block !important;
+    }
+    
+    h1, h2, h3 {
+        color: #000;
+        text-shadow: none;
+    }
+    
+    table {
+        border: 1px solid #000;
+    }
+    
+    th {
+        background: #f0f0f0 !important;
+        color: #000 !important;
+    }
+}
+
+/* ============================================================
+   25. ACCESSIBILITY IMPROVEMENTS
+   ============================================================ */
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+    outline: 2px solid #00d4ff;
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .panel {
+        border: 2px solid #00d4ff;
+    }
+    
+    button {
+        border: 2px solid white;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .star {
+        animation: none;
+    }
+}
+
+/* Screen reader only content */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ============================================================
+   END OF STYLESHEET
+   ============================================================ */
