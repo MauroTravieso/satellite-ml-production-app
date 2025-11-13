@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Validation</title>
+</head>
+<body>
+    <h1>Automated Model Validation</h1>
+    <div id="results"></div>
+    
+    <script>
+        // Load and test model
+        async function runValidation() {
+            const testCases = [
+                {input: {latitude: 51.6, longitude: -122, x_eci_km: 6771.5, y_eci_km: 100, z_eci_km: 200, velocity_x: 7.66, velocity_y: 0.5, velocity_z: 0.3}, expected: 'ISS'},
+                {input: {latitude: 98.2, longitude: 45, x_eci_km: 7065, y_eci_km: 500, z_eci_km: 1000, velocity_x: 7.45, velocity_y: -0.5, velocity_z: -0.3}, expected: 'Sentinel1A'}
+            ];
+            
+            let passed = 0;
+            let failed = 0;
+            
+            testCases.forEach((test, idx) => {
+                const result = predictSatellite(test.input);
+                const success = result.prediction === test.expected;
+                
+                if (success) passed++;
+                else failed++;
+                
+                console.log(`Test ${idx + 1}: ${success ? '✓ PASS' : '✗ FAIL'}`);
+            });
+            
+            document.getElementById('results').innerHTML = `
+                <h2>Results:</h2>
+                <p>Passed: ${passed}/${testCases.length}</p>
+                <p>Failed: ${failed}/${testCases.length}</p>
+                <p>Accuracy: ${(passed/testCases.length * 100).toFixed(1)}%</p>
+            `;
+        }
+        
+        window.onload = runValidation;
+    </script>
+</body>
+</html>
