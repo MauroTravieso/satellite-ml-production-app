@@ -7,6 +7,110 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
+    <!-- AUTHENTICATION SCRIPT -->
+    <script>
+        // Session Authentication Check
+        (function() {
+            'use strict';
+            
+            function checkAuthentication() {
+                const sessionData = localStorage.getItem('satelliteSession') || 
+                                   sessionStorage.getItem('satelliteSession');
+                
+                if (!sessionData) {
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                
+                try {
+                    const session = JSON.parse(sessionData);
+                    
+                    if (!session.username || !session.loginTime) {
+                        throw new Error('Invalid session');
+                    }
+                    
+                    const loginTime = new Date(session.loginTime);
+                    const now = new Date();
+                    const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                    
+                    if (hoursSinceLogin > 24) {
+                        localStorage.removeItem('satelliteSession');
+                        sessionStorage.removeItem('satelliteSession');
+                        window.location.href = 'login.html';
+                        return false;
+                    }
+                    
+                    displayUserInfo(session);
+                    return true;
+                    
+                } catch (e) {
+                    localStorage.removeItem('satelliteSession');
+                    sessionStorage.removeItem('satelliteSession');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+            }
+            
+            function displayUserInfo(session) {
+                const header = document.querySelector('header');
+                if (header) {
+                    const userBar = document.createElement('div');
+                    userBar.style.cssText = `
+                        background: rgba(0, 212, 255, 0.1);
+                        border: 1px solid rgba(0, 212, 255, 0.3);
+                        border-radius: 10px;
+                        padding: 12px 20px;
+                        margin-top: 15px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 10px;
+                    `;
+                    
+                    userBar.innerHTML = `
+                        <div style="color: #88ccff;">
+                            <span style="font-size: 1.2em; margin-right: 8px;">👤</span>
+                            <strong style="color: #00ff88;">Logged in as:</strong> 
+                            <span style="color: #00d4ff;">${session.username}</span>
+                            <span style="color: #66aacc; margin-left: 15px; font-size: 0.9em;">
+                                ${new Date(session.loginTime).toLocaleString()}
+                            </span>
+                        </div>
+                        <button onclick="logout()" style="
+                            background: linear-gradient(45deg, #ff4444, #cc0000);
+                            border: none;
+                            padding: 8px 20px;
+                            border-radius: 8px;
+                            color: white;
+                            cursor: pointer;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 3px 10px rgba(255, 68, 68, 0.3);
+                        " onmouseover="this.style.background='linear-gradient(45deg, #ff6666, #ff0000)'; this.style.boxShadow='0 5px 15px rgba(255, 68, 68, 0.5)'"
+                           onmouseout="this.style.background='linear-gradient(45deg, #ff4444, #cc0000)'; this.style.boxShadow='0 3px 10px rgba(255, 68, 68, 0.3)'">
+                            🚪 Logout
+                        </button>
+                    `;
+                    
+                    header.appendChild(userBar);
+                }
+            }
+            
+            window.logout = function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    localStorage.removeItem('satelliteSession');
+                    sessionStorage.removeItem('satelliteSession');
+                    window.location.href = 'login.html';
+                }
+            };
+            
+            checkAuthentication();
+            
+        })();
+    </script>
+    <!-- AUTHENTICATION SCRIPT -->
+    
     <div class="stars" id="stars"></div>
     
     <div class="container">
