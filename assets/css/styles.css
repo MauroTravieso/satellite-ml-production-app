@@ -54,6 +54,13 @@ body {
     }
 }
 
+.logo-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
 /* ============================================================
    3. LAYOUT & CONTAINER
    ============================================================ */
