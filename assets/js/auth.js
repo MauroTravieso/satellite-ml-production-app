@@ -1,12 +1,7 @@
-// ============================================
-// auth.js - Authentication Module
-// Save this as: assets/js/auth.js
-// ============================================
-
+// assets/js/auth.js - FIXED VERSION
 const SatelliteAuth = (function() {
     'use strict';
     
-    // Valid credentials (in production, this would be server-side)
     const VALID_CREDENTIALS = {
         'demo': 'demo123',
         'admin': 'admin123',
@@ -16,26 +11,11 @@ const SatelliteAuth = (function() {
     const SESSION_KEY = 'satelliteSession';
     const SESSION_EXPIRY_HOURS = 24;
     
-    // ============================================
-    // Public Methods
-    // ============================================
-    
-    /**
-     * Authenticate user with username and password
-     * @param {string} username 
-     * @param {string} password 
-     * @param {boolean} rememberMe 
-     * @returns {Object} {success: boolean, message: string}
-     */
     function login(username, password, rememberMe = false) {
         if (!username || !password) {
-            return {
-                success: false,
-                message: 'Username and password are required'
-            };
+            return { success: false, message: 'Username and password are required' };
         }
         
-        // Check credentials
         if (VALID_CREDENTIALS[username] && VALID_CREDENTIALS[username] === password) {
             const sessionData = {
                 username: username,
@@ -43,108 +23,111 @@ const SatelliteAuth = (function() {
                 rememberMe: rememberMe
             };
             
-            // Store session
             const storage = rememberMe ? localStorage : sessionStorage;
             storage.setItem(SESSION_KEY, JSON.stringify(sessionData));
             
-            return {
-                success: true,
-                message: 'Login successful',
-                user: username
-            };
+            console.log('Login successful:', username);
+            
+            return { success: true, message: 'Login successful', user: username };
         }
         
-        return {
-            success: false,
-            message: 'Invalid username or password'
-        };
+        return { success: false, message: 'Invalid username or password' };
     }
     
-    /**
-     * Check if user is authenticated
-     * @returns {Object|null} Session data or null
-     */
     function checkAuth() {
         const sessionData = localStorage.getItem(SESSION_KEY) || 
                            sessionStorage.getItem(SESSION_KEY);
         
         if (!sessionData) {
+            console.log('No session found');
             return null;
         }
         
         try {
             const session = JSON.parse(sessionData);
             
-            // Validate session structure
             if (!session.username || !session.loginTime) {
+                console.log('Invalid session structure');
                 clearSession();
                 return null;
             }
             
-            // Check session expiry
             const loginTime = new Date(session.loginTime);
             const now = new Date();
             const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
             
             if (hoursSinceLogin > SESSION_EXPIRY_HOURS) {
+                console.log('Session expired');
                 clearSession();
                 return null;
             }
             
+            console.log('Valid session found:', session.username);
             return session;
             
         } catch (e) {
+            console.error('Error parsing session:', e);
             clearSession();
             return null;
         }
     }
     
-    /**
-     * Logout user and clear session
-     */
     function logout() {
+        console.log('Logging out');
         clearSession();
-        window.location.href = 'index.html';
+        window.location.replace('index.html');
     }
     
-    /**
-     * Clear all session data
-     */
     function clearSession() {
         localStorage.removeItem(SESSION_KEY);
         sessionStorage.removeItem(SESSION_KEY);
+        sessionStorage.removeItem('redirecting');
+        console.log('Session cleared');
     }
     
-    /**
-     * Require authentication for protected pages
-     * Redirects to login if not authenticated
-     */
     function requireAuth() {
+        console.log('Checking authentication for protected page');
+        
+        // Prevent redirect loop
+        if (sessionStorage.getItem('redirecting')) {
+            sessionStorage.removeItem('redirecting');
+        }
+        
         const session = checkAuth();
         if (!session) {
-            window.location.href = 'index.html';
+            console.log('Not authenticated, redirecting to login');
+            window.location.replace('index.html');
             return null;
         }
+        
+        console.log('Authentication verified');
         return session;
     }
     
-    /**
-     * Redirect to dashboard if already authenticated
-     * Use this on login page
-     */
     function redirectIfAuthenticated() {
+        // Don't check if we're currently redirecting
+        if (sessionStorage.getItem('redirecting')) {
+            console.log('Redirect in progress, skipping check');
+            return false;
+        }
+        
         const session = checkAuth();
         if (session) {
-            window.location.href = 'dashboard.html';
+            console.log('Already authenticated, redirecting to dashboard');
+            sessionStorage.setItem('redirecting', 'true');
+            
+            // Use setTimeout to ensure storage is set before redirect
+            setTimeout(function() {
+                window.location.replace('dashboard.html');
+            }, 100);
+            
             return true;
         }
+        
+        console.log('Not authenticated, staying on login page');
         return false;
     }
     
-    /**
-     * Get current user info
-     * @returns {Object|null}
-     */
     function getCurrentUser() {
         const session = checkAuth();
         return session ? {
@@ -152,10 +135,6 @@ const SatelliteAuth = (function() {
             loginTime: session.loginTime
         } : null;
     }
-    
-    // ============================================
-    // Export Public API
-    // ============================================
     
     return {
         login: login,
@@ -169,5 +148,4 @@ const SatelliteAuth = (function() {
     
 })();
 
-// Make it available globally
 window.SatelliteAuth = SatelliteAuth;
