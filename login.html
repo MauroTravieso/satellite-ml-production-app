@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Satellite Trajectory Classification System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f1428 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Login container */
+        .login-container {
+            position: relative;
+            z-index: 1;
+            background: rgba(15, 20, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.2),
+                        0 0 100px rgba(0, 255, 136, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #00d4ff;
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .subtitle {
+            color: #88ccff;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .version {
+            color: #66aacc;
+            font-size: 0.85em;
+            margin-top: 8px;
+        }
+
+        /* Form styles */
+        .login-form {
+            margin-top: 35px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #88ccff;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            color: #66aacc;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            background: rgba(10, 15, 35, 0.8);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            background: rgba(10, 15, 35, 0.95);
+        }
+
+        input::placeholder {
+            color: #66aacc;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9em;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            color: #88ccff;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+            padding: 0;
+        }
+
+        .forgot-password {
+            color: #00ff88;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: #00ffaa;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #00d4ff, #0099ff);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .login-button:hover {
+            background: linear-gradient(45deg, #00ffff, #00ccff);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+        }
+
+        .divider span {
+            background: rgba(15, 20, 40, 0.95);
+            padding: 0 15px;
+            color: #66aacc;
+            font-size: 0.9em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .demo-credentials {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .demo-credentials h3 {
+            color: #00ff88;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+
+        .demo-credentials p {
+            color: #88ccff;
+            font-size: 0.85em;
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .alert {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-error {
+            background: rgba(255, 68, 68, 0.2);
+            border: 1px solid rgba(255, 68, 68, 0.5);
+            color: #ff8888;
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            color: #88ffcc;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #66aacc;
+            font-size: 0.85em;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading .spinner {
+            display: block;
+        }
+
+        .loading .login-button {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <div class="login-container">
+        <div class="logo-section">
+            <span class="logo-icon">🛰️</span>
+            <h1>Satellite Trajectory System</h1>
+            <p class="subtitle">ML-Powered Orbital Prediction Engine</p>
+            <p class="version">Production Deployment v1.0</p>
+        </div>
+
+        <div class="alert alert-error" id="alertBox"></div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Enter your username"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password"
+                    >
+                </div>
+            </div>
+
+            <div class="remember-forgot">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <span>Remember me</span>
+                </label>
+                <a href="#" class="forgot-password" onclick="handleForgotPassword(event)">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-button" id="loginButton">
+                🚀 Sign In
+            </button>
+            <div class="spinner" id="spinner"></div>
+        </form>
+
+        <div class="divider">
+            <span>DEMO ACCESS</span>
+        </div>
+
+        <div class="demo-credentials">
+            <h3>🔑 Demo Credentials</h3>
+            <p><strong>User:</strong> demo / <strong>Pass:</strong> demo123</p>
+            <p><strong>Admin:</strong> admin / <strong>Pass:</strong> admin123</p>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 Mauro Travieso - Big Data Engineer</p>
+        </div>
+    </div>
+
+    <script>
+        // Generate animated stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 150;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.opacity = Math.random() * 0.7 + 0.3;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        createStars();
+
+        // Demo credentials
+        const validCredentials = {
+            'demo': 'demo123',
+            'admin': 'admin123',
+            'mauro': 'satellite2025'
+        };
+
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type}`;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 4000);
+        }
+
+        function handleForgotPassword(event) {
+            event.preventDefault();
+            showAlert('Please contact the system administrator at mauro.travieso@satellite-ml.com', 'success');
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const loginButton = document.getElementById('loginButton');
+            const spinner = document.getElementById('spinner');
+            
+            // Show loading state
+            loginButton.style.opacity = '0.7';
+            loginButton.style.pointerEvents = 'none';
+            spinner.style.display = 'block';
+            
+            // Simulate authentication delay
+            setTimeout(() => {
+                if (validCredentials[username] && validCredentials[username] === password) {
+                    showAlert('✅ Login successful! Redirecting...', 'success');
+                    
+                    // Store session data
+                    const sessionData = {
+                        username: username,
+                        loginTime: new Date().toISOString(),
+                        rememberMe: rememberMe
+                    };
+                    
+                    if (rememberMe) {
+                        localStorage.setItem('satelliteSession', JSON.stringify(sessionData));
+                    } else {
+                        sessionStorage.setItem('satelliteSession', JSON.stringify(sessionData));
+                    }
+                    
+                    // Redirect to main application
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                } else {
+                    showAlert('❌ Invalid username or password. Please try again.', 'error');
+                    loginButton.style.opacity = '1';
+                    loginButton.style.pointerEvents = 'auto';
+                    spinner.style.display = 'none';
+                    
+                    // Shake animation on error
+                    const container = document.querySelector('.login-container');
+                    container.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        container.style.animation = 'fadeIn 0.8s ease-out';
+                    }, 500);
+                }
+            }, 1000);
+        });
+
+        // Shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Check for existing session on page load
+        window.addEventListener('load', function() {
+            const sessionData = localStorage.getItem('satelliteSession') || 
+                               sessionStorage.getItem('satelliteSession');
+            
+            if (sessionData) {
+                try {
+                    const session = JSON.parse(sessionData);
+                    showAlert(`Welcome back, ${session.username}! Redirecting...`, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } catch (e) {
+                    // Invalid session data, clear it
+                    localStorage.removeItem('satelliteSession');
+                    sessionStorage.removeItem('satelliteSession');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
