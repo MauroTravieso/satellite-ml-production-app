@@ -22,7 +22,6 @@
             overflow: hidden;
         }
 
-        /* Animated stars background */
         .stars {
             position: fixed;
             top: 0;
@@ -47,7 +46,6 @@
             50% { opacity: 1; }
         }
 
-        /* Login container */
         .login-container {
             position: relative;
             z-index: 1;
@@ -110,7 +108,6 @@
             margin-top: 8px;
         }
 
-        /* Form styles */
         .login-form {
             margin-top: 35px;
         }
@@ -207,7 +204,7 @@
             box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
         }
 
-        .login-button:hover {
+        .login-button:hover:not(:disabled) {
             background: linear-gradient(45deg, #00ffff, #00ccff);
             box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
             transform: translateY(-2px);
@@ -215,6 +212,11 @@
 
         .login-button:active {
             transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .divider {
@@ -302,36 +304,37 @@
             font-size: 0.85em;
         }
 
-        /* Loading spinner */
         .spinner {
-            display: none;
-            width: 20px;
-            height: 20px;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-top-color: white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto;
+            margin-left: 10px;
+            vertical-align: middle;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        .loading .spinner {
-            display: block;
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
-        .loading .login-button {
-            opacity: 0.7;
-            pointer-events: none;
+        .shake {
+            animation: shake 0.5s;
         }
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
 
-    <div class="login-container">
+    <div class="login-container" id="loginContainer">
         <div class="logo-section">
             <span class="logo-icon">🛰️</span>
             <h1>Satellite Trajectory System</h1>
@@ -377,13 +380,12 @@
                     <input type="checkbox" id="rememberMe" name="rememberMe">
                     <span>Remember me</span>
                 </label>
-                <a href="#" class="forgot-password" onclick="handleForgotPassword(event)">Forgot password?</a>
+                <a href="#" class="forgot-password" id="forgotPassword">Forgot password?</a>
             </div>
 
             <button type="submit" class="login-button" id="loginButton">
                 🚀 Sign In
             </button>
-            <div class="spinner" id="spinner"></div>
         </form>
 
         <div class="divider">
@@ -420,7 +422,7 @@
 
         createStars();
 
-        // Demo credentials
+        // Valid credentials
         const validCredentials = {
             'demo': 'demo123',
             'admin': 'admin123',
@@ -438,10 +440,10 @@
             }, 4000);
         }
 
-        function handleForgotPassword(event) {
-            event.preventDefault();
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
             showAlert('Please contact the system administrator at mauro.travieso@satellite-ml.com', 'success');
-        }
+        });
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -450,12 +452,11 @@
             const password = document.getElementById('password').value;
             const rememberMe = document.getElementById('rememberMe').checked;
             const loginButton = document.getElementById('loginButton');
-            const spinner = document.getElementById('spinner');
+            const container = document.getElementById('loginContainer');
             
             // Show loading state
-            loginButton.style.opacity = '0.7';
-            loginButton.style.pointerEvents = 'none';
-            spinner.style.display = 'block';
+            loginButton.disabled = true;
+            loginButton.innerHTML = '🚀 Signing In<span class="spinner"></span>';
             
             // Simulate authentication delay
             setTimeout(() => {
@@ -475,38 +476,25 @@
                         sessionStorage.setItem('satelliteSession', JSON.stringify(sessionData));
                     }
                     
-                    // Redirect to main application
+                    // CRITICAL FIX: Redirect to dashboard.html, NOT index.html
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
-                    }, 1500);
+                    }, 1000);
                 } else {
                     showAlert('❌ Invalid username or password. Please try again.', 'error');
-                    loginButton.style.opacity = '1';
-                    loginButton.style.pointerEvents = 'auto';
-                    spinner.style.display = 'none';
+                    loginButton.disabled = false;
+                    loginButton.innerHTML = '🚀 Sign In';
                     
-                    // Shake animation on error
-                    const container = document.querySelector('.login-container');
-                    container.style.animation = 'shake 0.5s';
+                    // Shake animation
+                    container.classList.add('shake');
                     setTimeout(() => {
-                        container.style.animation = 'fadeIn 0.8s ease-out';
+                        container.classList.remove('shake');
                     }, 500);
                 }
             }, 1000);
         });
 
-        // Shake animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                75% { transform: translateX(10px); }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Check for existing session on page load
+        // CRITICAL FIX: Check for existing session and redirect to dashboard.html
         window.addEventListener('load', function() {
             const sessionData = localStorage.getItem('satelliteSession') || 
                                sessionStorage.getItem('satelliteSession');
@@ -514,10 +502,12 @@
             if (sessionData) {
                 try {
                     const session = JSON.parse(sessionData);
-                    showAlert(`Welcome back, ${session.username}! Redirecting...`, 'success');
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 1000);
+                    if (session.username && session.loginTime) {
+                        showAlert(`Welcome back, ${session.username}! Redirecting...`, 'success');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    }
                 } catch (e) {
                     // Invalid session data, clear it
                     localStorage.removeItem('satelliteSession');
