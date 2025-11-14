@@ -54,7 +54,7 @@
 
 Visit the deployed application:
 ```
-https://MauroTravieso.github.io/satellite-ml-predictor/
+https://MauroTravieso.github.io/satellite-ml-predictor-app/
 ```
 
 ## 📊 Model Performance
