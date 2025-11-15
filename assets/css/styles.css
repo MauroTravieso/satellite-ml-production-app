@@ -70,6 +70,7 @@ body {
     display: inline-block;
     margin-bottom: 15px;
     animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5)); /* Optional: Add glow effect to logo */
 }
 
 /* Float animation keyframes */
@@ -80,11 +81,6 @@ body {
     50% { 
         transform: translateY(-10px); 
     }
-}
-
-/* Optional: Add glow effect to logo */
-.logo-icon {
-    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
 }
 
 /* Ensure header has proper styling */
