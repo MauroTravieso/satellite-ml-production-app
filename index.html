@@ -19,7 +19,10 @@
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
+            /* overflow: hidden; */
+            overflow-x: hidden;  /* ✅ Prevents horizontal scroll */
+	    overflow-y: auto;    /* ✅ Allows vertical scroll */
+	    padding: 20px 0;     /* ✅ Adds spacing top/bottom */
         }
 
         .stars {
