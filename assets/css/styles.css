@@ -56,7 +56,6 @@ body {
 
 /* ============================================
    FLOATING LOGO ANIMATION
-   Add this to your assets/css/styles.css file
    ============================================ */
 
 /* Logo section styling */
@@ -283,6 +282,28 @@ button:disabled {
     margin-top: 10px;
     padding: 10px 20px;
     font-size: 0.95em;
+}
+
+ /* Button Separator */
+.button-separator {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+    margin: 20px 0 15px 0;
+    position: relative;
+}
+
+.button-separator::after {
+    content: 'Sample Data';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(15, 20, 40, 0.95);
+    padding: 0 15px;
+    color: #66aacc;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
 }
 
 /* ============================================================
