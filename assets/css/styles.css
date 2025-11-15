@@ -54,18 +54,56 @@ body {
     }
 }
 
+/* ============================================
+   FLOATING LOGO ANIMATION
+   Add this to your assets/css/styles.css file
+   ============================================ */
+
+/* Logo section styling */
 .logo-section {
-            text-align: center;
-            margin-bottom: 35px;
-        }
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-
+/* Floating satellite icon */
 .logo-icon {
-            font-size: 4em;
-            margin-bottom: 15px;
-            display: block;
-            animation: float 3s ease-in-out infinite;
-        }
+    font-size: 3.5em;
+    display: inline-block;
+    margin-bottom: 15px;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Float animation keyframes */
+@keyframes float {
+    0%, 100% { 
+        transform: translateY(0); 
+    }
+    50% { 
+        transform: translateY(-10px); 
+    }
+}
+
+/* Optional: Add glow effect to logo */
+.logo-icon {
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.5));
+}
+
+/* Ensure header has proper styling */
+header {
+    position: relative;
+}
+
+header h1 {
+    color: #00d4ff;
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+header .subtitle {
+    color: #88ccff;
+    font-size: 1.1em;
+}
 
 /* ============================================================
    3. LAYOUT & CONTAINER
